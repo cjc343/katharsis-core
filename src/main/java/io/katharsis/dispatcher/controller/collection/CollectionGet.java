@@ -4,6 +4,7 @@ import io.katharsis.dispatcher.controller.HttpMethod;
 import io.katharsis.dispatcher.controller.resource.ResourceIncludeField;
 import io.katharsis.repository.RepositoryMethodParameterProvider;
 import io.katharsis.queryParams.QueryParams;
+import io.katharsis.queryParams.params.FilterParams;
 import io.katharsis.repository.ResourceRepository;
 import io.katharsis.request.dto.RequestBody;
 import io.katharsis.request.path.JsonPath;
@@ -16,14 +17,17 @@ import io.katharsis.response.BaseResponse;
 import io.katharsis.response.CollectionResponse;
 import io.katharsis.response.LinksInformation;
 import io.katharsis.response.MetaInformation;
+import io.katharsis.utils.BeanUtils;
 import io.katharsis.utils.parser.TypeParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class CollectionGet extends ResourceIncludeField {
 
@@ -63,6 +67,8 @@ public class CollectionGet extends ResourceIncludeField {
             resources = resourceRepository.findAll(parsedIds, queryParams);
         }
 
+        resources = filterCollection(resources, queryParams, resourceName);
+
         List containers = new LinkedList();
         if (resources != null) {
             includeFieldSetter.setIncludedElements(resourceName, resources, queryParams, parameterProvider);
@@ -74,5 +80,38 @@ public class CollectionGet extends ResourceIncludeField {
         LinksInformation linksInformation = getLinksInformation(resourceRepository, resources, queryParams);
 
         return new CollectionResponse(containers, jsonPath, queryParams, metaInformation, linksInformation);
+    }
+
+    // Filter a generic iterable collection of Objects. Limits the applied filters to the fields present in the first object.
+    public Iterable<?> filterCollection(Iterable<?> resources, QueryParams queryParams, String resourceName) {
+      if (queryParams != null && queryParams.getFilters() != null) {
+        FilterParams filters = queryParams.getFilters().getParams().get(resourceName);
+        Object sample = (resources.iterator().hasNext() ? resources.iterator().next() : null);
+        if (sample != null && filters != null && filters.getParams() != null && !filters.getParams().isEmpty()) {
+          // We have a set of filters defined, limit them to those fields present in our objects
+          Map<String, Set<String>> applicableFilters = filters.getParams().entrySet().stream()
+              .filter(e -> {
+                try {
+                  sample.getClass().getDeclaredField(e.getKey());
+                } catch (NoSuchFieldException e1) {
+                  return false;
+                }
+                return true;
+              })
+              .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
+          if (!applicableFilters.isEmpty()) {
+            resources = StreamSupport.stream(resources.spliterator(), false)
+                .filter(v -> {
+                  return applicableFilters.entrySet().stream()
+                    .map(e -> {
+                      return e.getValue().contains(BeanUtils.getProperty(v, e.getKey()));
+                    })
+                    .allMatch(b -> b == true);
+                })
+                .collect(Collectors.toList());
+          }
+        }
+      }
+      return resources;
     }
 }

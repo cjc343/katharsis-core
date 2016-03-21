@@ -87,7 +87,7 @@ public class IncludedRelationshipExtractorTest {
         ClassAWithInclusion classAWithInclusion = new ClassAWithInclusion(classBsWithInclusion);
 
         // WHEN
-        Set<?> result = sut.extractIncludedResources(classAWithInclusion, testResponse);
+        Set<Container> result = (Set<Container>) sut.extractIncludedResources(classAWithInclusion, testResponse);
 
         // THEN
         assertThat(result).containsExactly(new Container(classBsWithInclusion, testResponse));
@@ -101,7 +101,7 @@ public class IncludedRelationshipExtractorTest {
         ClassAWithInclusion classAWithInclusion = new ClassAWithInclusion(classBWithInclusion);
 
         // WHEN
-        Set<?> result = sut.extractIncludedResources(classAWithInclusion, testResponse);
+        Set<Container> result = (Set<Container>) sut.extractIncludedResources(classAWithInclusion, testResponse);
 
         // THEN
         assertThat(result).containsOnly(new Container(classBWithInclusion, testResponse),
@@ -115,7 +115,7 @@ public class IncludedRelationshipExtractorTest {
         classCWithInclusion.setClassCsWithInclusion(Collections.singletonList(classCWithInclusion));
 
         // WHEN
-        Set<?> result = sut.extractIncludedResources(classCWithInclusion, testResponse);
+        Set<Container> result = (Set<Container>) sut.extractIncludedResources(classCWithInclusion, testResponse);
 
         // THEN
         assertThat(result).containsExactly(new Container(classCWithInclusion, testResponse));
@@ -133,7 +133,7 @@ public class IncludedRelationshipExtractorTest {
         ClassAWithInclusion classAWithInclusion = new ClassAWithInclusion(classBsWithInclusion);
 
         // WHEN
-        Set<?> result = sut.extractIncludedResources(classAWithInclusion, response);
+        Set<Container> result = (Set<Container>) sut.extractIncludedResources(classAWithInclusion, response);
 
         // THEN
         assertThat(result).containsExactly(new Container(classBsWithInclusion, testResponse));
@@ -151,7 +151,7 @@ public class IncludedRelationshipExtractorTest {
         ClassA classA = new ClassA(classBs);
 
         // WHEN
-        Set<?> result = sut.extractIncludedResources(classA, response);
+        Set<Container> result = (Set<Container>) sut.extractIncludedResources(classA, response);
 
         // THEN
         assertThat(result).containsExactly(new Container(classBs, testResponse));

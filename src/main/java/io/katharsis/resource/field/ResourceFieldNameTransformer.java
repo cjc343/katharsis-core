@@ -1,7 +1,6 @@
 package io.katharsis.resource.field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
@@ -36,9 +35,9 @@ public class ResourceFieldNameTransformer {
             name = field.getAnnotation(JsonProperty.class).value();
         } else if (serializationConfig != null && serializationConfig.getPropertyNamingStrategy() != null) {
             AnnotationMap annotationMap = buildAnnotationMap(field.getDeclaredAnnotations());
-            boolean useAnnotations = serializationConfig.isAnnotationProcessingEnabled();
-            AnnotationIntrospector aintr = useAnnotations ? serializationConfig.getAnnotationIntrospector() : null;
-            AnnotatedClass annotatedClass = AnnotatedClass.construct(field.getDeclaringClass(), aintr, serializationConfig);
+//            boolean useAnnotations = serializationConfig.isAnnotationProcessingEnabled();
+//            AnnotationIntrospector aintr = useAnnotations ? serializationConfig.getAnnotationIntrospector() : null;
+            AnnotatedClass annotatedClass = AnnotatedClass.constructWithoutSuperTypes(field.getDeclaringClass(), serializationConfig);//.construct(field.getDeclaringClass(), aintr, serializationConfig);
             AnnotatedField annotatedField = new AnnotatedField(annotatedClass, field, annotationMap);
             name = serializationConfig.getPropertyNamingStrategy().nameForField(serializationConfig, annotatedField, name);
         }
@@ -70,9 +69,9 @@ public class ResourceFieldNameTransformer {
                 paramAnnotations[i] = parameterAnnotationMap;
             }
 
-            boolean useAnnotations = serializationConfig.isAnnotationProcessingEnabled();
-            AnnotationIntrospector aintr = useAnnotations ? serializationConfig.getAnnotationIntrospector() : null;
-            AnnotatedClass annotatedClass = AnnotatedClass.construct(method.getDeclaringClass(), aintr, serializationConfig);
+//            boolean useAnnotations = serializationConfig.isAnnotationProcessingEnabled();
+//            AnnotationIntrospector aintr = useAnnotations ? serializationConfig.getAnnotationIntrospector() : null;
+            AnnotatedClass annotatedClass = AnnotatedClass.constructWithoutSuperTypes(method.getDeclaringClass(), serializationConfig);//construct(method.getDeclaringClass(), aintr, serializationConfig);
             AnnotatedMethod annotatedField = new AnnotatedMethod(annotatedClass, method, annotationMap, paramAnnotations);
             name = serializationConfig.getPropertyNamingStrategy().nameForGetterMethod(serializationConfig, annotatedField, name);
         }
