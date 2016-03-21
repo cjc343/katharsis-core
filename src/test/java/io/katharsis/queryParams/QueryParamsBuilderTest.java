@@ -163,6 +163,7 @@ public class QueryParamsBuilderTest {
         assertThat(result.getIncludedRelations()
             .getParams()
             .get("special-users")
-            .getParams()).containsExactly(new Inclusion("friends"), new Inclusion("foes"));
+            // Original order is not guaranteed
+            .getParams()).containsOnly(new Inclusion("friends"), new Inclusion("foes"));
     }
 }

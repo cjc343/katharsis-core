@@ -4,6 +4,7 @@ import io.katharsis.dispatcher.controller.HttpMethod;
 import io.katharsis.dispatcher.controller.resource.ResourceIncludeField;
 import io.katharsis.repository.RepositoryMethodParameterProvider;
 import io.katharsis.queryParams.QueryParams;
+import io.katharsis.queryParams.params.FilterParams;
 import io.katharsis.repository.ResourceRepository;
 import io.katharsis.request.dto.RequestBody;
 import io.katharsis.request.path.JsonPath;
@@ -16,14 +17,17 @@ import io.katharsis.response.BaseResponse;
 import io.katharsis.response.CollectionResponse;
 import io.katharsis.response.LinksInformation;
 import io.katharsis.response.MetaInformation;
+import io.katharsis.utils.BeanUtils;
 import io.katharsis.utils.parser.TypeParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class CollectionGet extends ResourceIncludeField {
 
