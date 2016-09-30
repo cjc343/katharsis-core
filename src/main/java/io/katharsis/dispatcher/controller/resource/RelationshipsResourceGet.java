@@ -62,9 +62,22 @@ public class RelationshipsResourceGet extends ResourceIncludeField  {
         RegistryEntry relationshipFieldEntry = resourceRegistry.getEntry(relationshipFieldClass);
         BaseResponseContext target;
         if (Iterable.class.isAssignableFrom(baseRelationshipFieldClass)) {
-            @SuppressWarnings("unchecked")
-            JsonApiResponse response = relationshipRepositoryForClass
-                .findManyTargets(castedResourceId, elementName, queryParams);
+            JsonPath child = jsonPath.getChildResource();
+            JsonApiResponse response;
+            if (child != null) {
+                PathIds childIds = child.getFieldIds();
+
+                @SuppressWarnings("unchecked") Class<? extends Serializable> childIdClass = (Class<? extends Serializable>)
+                    resourceRegistry.getEntry(child.getResourceName())
+                    .getResourceInformation()
+                    .getIdField()
+                    .getType();
+                response = relationshipRepositoryForClass
+                    .findManyTargets(castedResourceId, elementName, typeParser.parse((Iterable<String>) childIds, childIdClass), queryParams);
+            } else {
+                response = relationshipRepositoryForClass
+                    .findManyTargets(castedResourceId, elementName, null, queryParams);
+            }
             includeFieldSetter.setIncludedElements(resourceName, response, queryParams, parameterProvider);
 
             List<LinkageContainer> dataList = getLinkages(relationshipFieldClass, relationshipFieldEntry, response);

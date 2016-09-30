@@ -68,7 +68,7 @@ public class PathBuilder {
             if (previousJsonPath != null) {
                 currentJsonPath = getNonResourcePath(previousJsonPath, elementName, relationshipMark);
                 if (pathIds != null) {
-                    throw new ResourceException("RelationshipsPath and FieldPath cannot contain ids");
+                    //throw new ResourceException("RelationshipsPath and FieldPath cannot contain ids");
                 }
             } else if (entry != null && !relationshipMark) {
                 currentJsonPath = new ResourcePath(elementName);

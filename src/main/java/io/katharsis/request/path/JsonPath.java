@@ -73,6 +73,8 @@ public abstract class JsonPath {
         this.ids = ids;
     }
 
+    public PathIds getFieldIds() { return null; }
+
     public JsonPath getParentResource() {
         return parentResource;
     }

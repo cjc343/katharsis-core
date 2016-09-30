@@ -127,7 +127,7 @@ public class IncludeLookupSetter {
             if (relationshipRepositoryForClass != null) {
                 JsonApiResponse response;
                 if (Iterable.class.isAssignableFrom(baseRelationshipFieldClass)) {
-                    response = relationshipRepositoryForClass.findManyTargets(castedResourceId, relationshipField.getName(), queryParams);
+                    response = relationshipRepositoryForClass.findManyTargets(castedResourceId, relationshipField.getName(), null, queryParams);
                 } else {
                     response = relationshipRepositoryForClass.findOneTarget(castedResourceId, relationshipField.getName(), queryParams);
                 }

@@ -26,7 +26,11 @@ public class FieldPath extends JsonPath {
         return parentResource.ids;
     }
 
-    public void setIds(PathIds ids) {
-        throw new UnsupportedOperationException("Ids can be assigned only to ResourcePath");
+    public PathIds getFieldIds() {
+        return ids;
     }
+
+//    public void setIds(PathIds ids) {
+//        throw new UnsupportedOperationException("Ids can be assigned only to ResourcePath");
+//    }
 }

@@ -67,11 +67,11 @@ public class AnnotatedRelationshipRepositoryAdapter<T, T_ID extends Serializable
         return invokeOperation(findOneTargetMethod, annotationType, new Object[]{sourceId, fieldName}, queryParams);
     }
 
-    public Object findManyTargets(T_ID sourceId, String fieldName, QueryParams queryParams) {
+    public Object findManyTargets(T_ID sourceId, String fieldName, Iterable<D_ID> targetIds, QueryParams queryParams) {
         Class<JsonApiFindManyTargets> annotationType = JsonApiFindManyTargets.class;
         if (findManyTargetsMethod == null) {
             findManyTargetsMethod = ClassUtils.findMethodWith(implementationClass, annotationType);
         }
-        return invokeOperation(findManyTargetsMethod, annotationType, new Object[]{sourceId, fieldName}, queryParams);
+        return invokeOperation(findManyTargetsMethod, annotationType, new Object[]{sourceId, fieldName, targetIds}, queryParams);
     }
 }

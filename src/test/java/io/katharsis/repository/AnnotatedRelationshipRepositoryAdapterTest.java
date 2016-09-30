@@ -217,7 +217,7 @@ public class AnnotatedRelationshipRepositoryAdapterTest {
         AnnotatedRelationshipRepositoryAdapter<Task, Long, Project, Long> sut = new AnnotatedRelationshipRepositoryAdapter<>(repo, parameterProvider);
 
         // WHEN
-        sut.findManyTargets(1L, "project", queryParams);
+        sut.findManyTargets(1L, "project", null, queryParams);
     }
 
     @Test(expected = RepositoryMethodException.class)
@@ -228,7 +228,7 @@ public class AnnotatedRelationshipRepositoryAdapterTest {
         AnnotatedRelationshipRepositoryAdapter<Task, Long, Project, Long> sut = new AnnotatedRelationshipRepositoryAdapter<>(repo, parameterProvider);
 
         // WHEN
-        sut.findManyTargets(1L, "project", queryParams);
+        sut.findManyTargets(1L, "project", null, queryParams);
     }
 
     @Test
@@ -238,7 +238,7 @@ public class AnnotatedRelationshipRepositoryAdapterTest {
         AnnotatedRelationshipRepositoryAdapter<Task, Long, Project, Long> sut = new AnnotatedRelationshipRepositoryAdapter<>(repo, parameterProvider);
 
         // WHEN
-        Object result = sut.findManyTargets(1L, "project", queryParams);
+        Object result = sut.findManyTargets(1L, "project", null, queryParams);
         Iterable<Project> projects = (Iterable<Project>) result;
 
         // THEN

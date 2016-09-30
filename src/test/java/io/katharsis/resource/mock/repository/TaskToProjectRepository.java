@@ -78,7 +78,7 @@ public class TaskToProjectRepository implements RelationshipRepository<Task, Lon
     }
 
     @Override
-    public Iterable<Project> findManyTargets(Long sourceId, String fieldName, QueryParams queryParams) {
+    public Iterable<Project> findManyTargets(Long sourceId, String fieldName, Iterable<Long> targetIds, QueryParams queryParams) {
         List<Project> projects = new LinkedList<>();
         for (Relation<Task> relation : THREAD_LOCAL_REPOSITORY.keySet()) {
             if (relation.getSource().getId().equals(sourceId) && relation.getFieldName().equals(fieldName)) {

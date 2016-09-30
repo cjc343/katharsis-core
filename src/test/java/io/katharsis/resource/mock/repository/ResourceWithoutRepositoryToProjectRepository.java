@@ -33,7 +33,7 @@ public class ResourceWithoutRepositoryToProjectRepository
     }
 
     @Override
-    public Iterable<Project> findManyTargets(String sourceId, String fieldName, QueryParams queryParams) {
+    public Iterable<Project> findManyTargets(String sourceId, String fieldName, Iterable<Long> targetIds, QueryParams queryParams) {
         return null;
     }
 }

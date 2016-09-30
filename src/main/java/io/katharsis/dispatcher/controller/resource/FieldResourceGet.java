@@ -58,7 +58,7 @@ public class FieldResourceGet extends ResourceIncludeField {
         if (Iterable.class.isAssignableFrom(baseRelationshipFieldClass)) {
             @SuppressWarnings("unchecked")
             JsonApiResponse response = relationshipRepositoryForClass
-                .findManyTargets(castedResourceId, elementName, queryParams);
+                .findManyTargets(castedResourceId, elementName, jsonPath.getFieldIds().getIds(), queryParams);
             includeFieldSetter.setIncludedElements(resourceName, response, queryParams, parameterProvider);
             target = new CollectionResponseContext(response, jsonPath, queryParams);
         } else {

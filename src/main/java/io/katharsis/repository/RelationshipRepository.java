@@ -90,8 +90,9 @@ public interface RelationshipRepository<T, T_ID extends Serializable, D, D_ID ex
      *
      * @param sourceId an identifier of a source
      * @param fieldName name of target's filed
+     * @param targetIds an identifier used to filter targets
      * @param queryParams parameters sent along with the request
      * @return identifiers of targets of a relation
      */
-    Iterable<D> findManyTargets(T_ID sourceId, String fieldName, QueryParams queryParams);
+    Iterable<D> findManyTargets(T_ID sourceId, String fieldName, Iterable<D_ID> targetIds, QueryParams queryParams);
 }

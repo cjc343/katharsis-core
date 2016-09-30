@@ -74,14 +74,14 @@ public class RelationshipRepositoryAdapter<T, T_ID extends Serializable, D, D_ID
         return getResponse(relationshipRepository, resource, queryParams);
     }
 
-    public JsonApiResponse findManyTargets(T_ID sourceId, String fieldName, QueryParams queryParams) {
+    public JsonApiResponse findManyTargets(T_ID sourceId, String fieldName, Iterable<D_ID> targetId, QueryParams queryParams) {
         Object resources;
         if (isAnnotated) {
             resources = ((AnnotatedRelationshipRepositoryAdapter) relationshipRepository)
-                .findManyTargets(sourceId, fieldName, queryParams);
+                .findManyTargets(sourceId, fieldName, targetId, queryParams);
         } else {
             resources = ((RelationshipRepository) relationshipRepository)
-                .findManyTargets(sourceId, fieldName, queryParams);
+                .findManyTargets(sourceId, fieldName, targetId, queryParams);
         }
         return getResponse(relationshipRepository, resources, queryParams);
     }
