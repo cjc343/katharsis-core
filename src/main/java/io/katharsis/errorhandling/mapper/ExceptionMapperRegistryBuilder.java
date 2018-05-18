@@ -25,7 +25,7 @@ public final class ExceptionMapperRegistryBuilder {
     }
 
     private void addKatharsisDefaultMappers() {
-        registerExceptionMapper(new KatharsisExceptionMapper());
+        // registerExceptionMapper(new KatharsisExceptionMapper());
     }
 
     private void registerExceptionMapper(JsonApiExceptionMapper<? extends Throwable> exceptionMapper) {
